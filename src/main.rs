@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+    aoc23::day1::run();
 }
