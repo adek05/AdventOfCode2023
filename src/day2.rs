@@ -13,26 +13,23 @@ fn parse_hand(s: &str) -> Hand {
     let mut r = 0;
     let mut g = 0;
     let mut b = 0;
-    s.split(',').for_each(
-        |x| {
-            let mut it = x.trim().split(' ');
-            let number_of_cubes = it.next().unwrap().parse::<i64>().unwrap();
-            let color = it.next().unwrap();
-            match color {
-                "red" => {r = number_of_cubes}
-                "green" => {g = number_of_cubes}
-                "blue" => {b = number_of_cubes}
-                _ => panic!("Parse error: unknonw color {}", color)
-            }
+    s.split(',').for_each(|x| {
+        let mut it = x.trim().split(' ');
+        let number_of_cubes = it.next().unwrap().parse::<i64>().unwrap();
+        let color = it.next().unwrap();
+        match color {
+            "red" => r = number_of_cubes,
+            "green" => g = number_of_cubes,
+            "blue" => b = number_of_cubes,
+            _ => panic!("Parse error: unknonw color {}", color),
         }
-    );
+    });
 
     Hand {
         red: r,
         green: g,
         blue: b,
     }
-
 }
 
 fn parse(s: &str) -> Vec<Hand> {
@@ -49,23 +46,24 @@ fn part1(games: &[Game]) {
     const MAX_BLUE: i64 = 14;
     // only 12 red cubes, 13 green cubes, and 14 blue cubes
 
-    let res = games.iter().enumerate().filter(
-        |(_game_id, hands)| {
-            hands.iter().all(|hand| {
-                hand.red <= MAX_RED &&
-                hand.green <= MAX_GREEN &&
-                hand.blue <= MAX_BLUE
-            })
-        }
-    ).map(|(game_id, _)| game_id+1)
-    .sum::<usize>();
+    let res = games
+        .iter()
+        .enumerate()
+        .filter(|(_game_id, hands)| {
+            hands
+                .iter()
+                .all(|hand| hand.red <= MAX_RED && hand.green <= MAX_GREEN && hand.blue <= MAX_BLUE)
+        })
+        .map(|(game_id, _)| game_id + 1)
+        .sum::<usize>();
 
     println!("Day 1.a: {}", res);
 }
 
 fn part2(games: &[Game]) {
-    let res: i64 = games.iter().map(
-        |hands| {
+    let res: i64 = games
+        .iter()
+        .map(|hands| {
             let mut max_r: i64 = 0;
             let mut max_g: i64 = 0;
             let mut max_b: i64 = 0;
@@ -75,8 +73,8 @@ fn part2(games: &[Game]) {
                 max_b = max_b.max(hand.blue);
             });
             max_r * max_g * max_b
-        }
-    ).sum();
+        })
+        .sum();
     println!("Day 1.b: {}", res);
 }
 
